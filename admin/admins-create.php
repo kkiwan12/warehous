@@ -40,7 +40,7 @@ include 'includes/header.php';
                     <div class="col-md-3  mt-3">
                     <div class="form-check form-switch">
                     <label  for="flexSwitchCheckChecked" style="font:bold">Is Ban</label>
-                         <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"  style="width:30px;height: 30px;">
+                         <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"  style="width:30px;height: 30px;" name="is_ban">
                 
                         </div>
                      </div>

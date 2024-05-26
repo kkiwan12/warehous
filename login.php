@@ -1,12 +1,19 @@
 <?php
 include 'includes/header.php';
-include 'includes/navbar.php';
+
+if (isset($_SESSION['loggedIn'])){
+    ?>
+    <script>window.location.href = 'index.php'</script>
+    <?php 
+}
 ?>
     <div class="py-5 bg-light">
         <div class="container mt-5">
           <div class="row  justify-content-center">
             <div class="col-md-6">
                 <div class="card shadow rounded-4">
+
+                <?php alertMessage(); ?>
                     <div class="p-5">
                         <h4 class="text-dark mb-6">minaitach - warehouse</h4>
 

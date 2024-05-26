@@ -115,9 +115,18 @@ if(isset($_POST['updateAdmin'])){
     }
 }
 
+
+
+//categories list
+
+
+
 if(isset($_POST['savecategory'])){
 
     $name = validate($_POST['name']);
+    $description = validate($_POST['description']); 
+    $status =isset($_POST['status']) == true ? 1:0;
+
 
     $categoryCheck =mysqli_query($connection,"SELECT * FROM categories WHERE categoryName ='$name'");
     if($name != ''){
@@ -130,7 +139,9 @@ if(isset($_POST['savecategory'])){
         }
     }
         $data =[
-            'categoryName'=>$name,  
+            'categoryName'=>$name, 
+            'description'=>$description,
+            'status'=>$status
         ];
 
         $result = insert('categories',$data);
@@ -160,6 +171,8 @@ if(isset($_POST['updateCategory'])){
     }
 
     $categoryName = validate($_POST['name']);
+    $description = validate($_POST['description']); 
+    $status =isset($_POST['status']) == true ? 1:0;
 
     $categoryCheckQuery ="SELECT * FROM categories WHERE categoryName ='$categoryName' AND id != '$categoryId'";
    $checkResult = mysqli_query($connection,$categoryCheckQuery);
@@ -172,7 +185,9 @@ if(isset($_POST['updateCategory'])){
     if($categoryName != ''){
 
         $date = [
-            'categoryName' => $categoryName
+            'categoryName' => $categoryName,
+            'description'=>$description,
+            'status'=>$status
         ];
 
         $result = update('categories',$categoryId,$date);

@@ -20,7 +20,7 @@ include 'includes/header.php';
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Phone</th>
-
+                                            <th>status</th>
                                             <th>Created at</th></th>
                                             <th>action</th>
                                         </tr>
@@ -31,7 +31,7 @@ include 'includes/header.php';
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Phone</th>
-
+                                            <th>status</th>
                                             <th>Created at</th></th>
                                             <th>action</th>
                                         </tr>
@@ -46,10 +46,17 @@ include 'includes/header.php';
                                             <td><?= $admin['name'] ?></td>
                                             <td><?= $admin['email'] ?></td>
                                             <td><?= $admin['phone'] ?></td>
+                                            <td><?php 
+                                            if($admin['is_ban'] == 1){
+                                               echo '<span class="badge bg-danger">banned</span>';
+                                            }else{
+                                                echo '<span class="badge bg-success">active</span>';
+                                            }
+                                            ?></td>
                                             <td><?= $admin['created_at'] ?></td>
                                             <td>
-                                                <a href="admins-edit.php?id=<?=  $admin['id']; ?>" class="btn btn-primary btn-sm">Edit</a>
-                                                <a href="admins-delete.php?id=<?=  $admin['id']; ?>" class="btn btn-danger btn-sm">Delete</a>
+                                                <a href="admins-edit.php?id=<?=  $admin['id']; ?>" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
+                                                <a href="admins-delete.php?id=<?=  $admin['id']; ?>" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></a>
                                             </td>
                                        
                                         </tr>
