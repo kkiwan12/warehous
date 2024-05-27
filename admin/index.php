@@ -1,5 +1,8 @@
 <?php
 include 'includes/header.php';
+if(isset($_SESSION['status'])){
+    unset($_SESSION['status']); 
+}
 ?>
 
 <div class="container-fluid px-4">

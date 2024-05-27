@@ -7,7 +7,7 @@ if (isset($_SESSION['loggedIn'])){
     <?php 
 }
 ?>
-    <div class="py-5 bg-light">
+    <div class="py-5 bg-wight">
         <div class="container mt-5">
           <div class="row  justify-content-center">
             <div class="col-md-6">

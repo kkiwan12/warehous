@@ -3,8 +3,9 @@ include 'includes/header.php';
 ?>
 <div class="container-fluid px-4 mt-4   ">
 <div class="card mb-4">
-    <?php alertMessage() ?>
+
                             <div class="card-header">
+                            <?php alertMessage() ?>
                                 <i class="fas fa-table me-1"></i>
                                 The admins 
                                 

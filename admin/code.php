@@ -200,3 +200,72 @@ if(isset($_POST['updateCategory'])){
         redirect('category-edit.php?id='.$categoryId,'please fill required fields');
     }
 }
+
+
+//the product list 
+
+if(isset($_POST['saveProduct'])){
+
+    $category_id =validate($_POST['category_id']);
+    $name = validate($_POST['name']);
+    $description = validate($_POST['description']);
+    $price = validate($_POST['price']);
+    $quantity = validate($_POST['quantity']);
+    $status =isset($_POST['status']) == true ? 1:0;
+    if (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
+        // Define the directory path for uploads
+        $path = "../assets/uploads/products/";
+        
+        // Create the directory if it does not exist
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+        
+        // Get the file extension
+        $image_ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+        
+        // Generate a unique filename based on the current timestamp
+        $fileName = time() . '.' . $image_ext;
+        
+        // Define the full path for the new file
+        $filePath = $path . $fileName;
+        
+        // Move the uploaded file to the new location
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $filePath)) {
+            // Store the relative path of the uploaded image in the database
+            $finalImage = $filePath;
+        } else {
+            // Handle the error if the file was not moved successfully
+            $finalImage = '';
+            // Optionally, log the error or set an error message
+            // error_log('File upload error: Unable to move the uploaded file.');
+        }
+    } else {
+        $finalImage = '';
+    }
+
+    $data = [
+        'category_id'=>$category_id,
+        'name'=>$name,
+        'description'=>$description,
+        'image'=>$finalImage,
+        'price'=>$price,
+        'quantity'=>$quantity,
+        'status'=>$status,
+    ];
+
+    $result = insert('products',$data);
+
+    
+    if($result){
+        redirect('products.php','the product added successfully');
+      }else{
+          redirect('products-create.php','somthing went wrong!');
+      }
+
+
+}
+
+if(isset($_POST['updateProduct'])){
+    
+}
