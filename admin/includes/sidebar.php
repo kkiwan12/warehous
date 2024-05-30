@@ -7,6 +7,14 @@
                                 <div class="sb-nav-link-icon"><i class="bi bi-gear-wide"></i></i></div>
                                 Dashboard
                             </a>
+                            <a class="nav-link" href="orders-create.php">
+                                <div class="sb-nav-link-icon"><i class="bi bi-receipt"></i></div>
+                                Create Order
+                            </a>
+                            <a class="nav-link" href="orders.php">
+                                <div class="sb-nav-link-icon"><i class="fa fa-list"></i></i></div>
+                                Orders
+                            </a>
                             <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="bi bi-people"></i></div>
@@ -17,6 +25,33 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="admins-create.php">add admin</a>
                                     <a class="nav-link" href="admin.php">view admins</a>
+                             
+                                </nav>
+                            </div>
+                            
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsCustomers" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="bi bi-people-fill"></i></div>
+                                customers
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapsCustomers" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                 
+                                    <a class="nav-link" href="customer.php">view customers</a>
+                                    <a class="nav-link" href="customer-create.php">Add customers</a>
+                                </nav>
+                            </div>
+
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseWarehouse" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="bi bi-archive"></i></i></div>
+                                Warehouse
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseWarehouse" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="warehouse-create.php">add Warehouse</a>
+                                    <a class="nav-link" href="warehouse.php">view Warehouse</a>
+                                    <a class="nav-link" href="warehouse-management.php">management Warehouse</a>
                              
                                 </nav>
                             </div>

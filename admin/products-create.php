@@ -59,18 +59,22 @@ include 'includes/header.php';
                      </div>
                     </div>
 
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-3 mb-3">
                        
                         <label >Quantity *</label>
                             <input type="number" name="quantity" class="form-control"   >
                     </div>
                 
 
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-3 mb-3">
                        
                         <label for="formFile" >product image</label>
-                        <input class="form-control" type="file" id="formFile" name="image">
-                      
+                        <input class="form-control" type="file" id="filetag" name="image">
+                   
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label>the selected image</label>
+                    <img src="" id="preview" style="width: 50px; height:50px">
                     </div>
 
 
@@ -93,3 +97,6 @@ include 'includes/header.php';
     </div>
 </div>
 <?php include 'includes/footer.php'?>
+<script>
+
+</script>

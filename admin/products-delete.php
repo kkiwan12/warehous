@@ -20,13 +20,13 @@ if(is_numeric($paraRestultId)){
         $productDelete  = delete('products',$productId);
 
         if($productDelete){
-            redirect ('products.php','category Dleleted Successfully');
+            redirect ('products.php','product Deleted Successfully');
         }else{
             redirect ('products.php','somting went wrong');
         }
 
     }else {
-        redirect ('products.php',$category['message']);
+        redirect ('products.php',$product['message']);
     }
 
 }else{

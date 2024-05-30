@@ -4,6 +4,18 @@ window.addEventListener('DOMContentLoaded', event => {
 
     const datatablesSimple = document.getElementById('datatablesSimple');
     if (datatablesSimple) {
-        new simpleDatatables.DataTable(datatablesSimple);
+        new simpleDatatables.DataTable(datatablesSimple,{
+            "dom": '<"top"<"left-col"B><"center-col"l><"right-col"f>>rtip',
+            buttons: [
+                    {
+                        extend: 'excelHtml5',
+                    },
+                    {
+                        extend: 'print',
+                        exportOptions: {stripHtml: false },
+                    }]
+        });
     }
+
+ 
 });

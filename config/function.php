@@ -28,6 +28,13 @@ function alertMessage(){
 
 }
 
+function logoutSession(){
+
+    unset($_SESSION['loggedIn']);
+    unset($_SESSION['loggedInUser']);
+    session_destroy();
+}
+
 //insert record into database
 function insert($tableName , $data){
     global $connection;
@@ -194,9 +201,31 @@ function countRecords($tableName){
 
 }
 
-function logoutSession(){
+function getByCategory($categoryId) {
+    global $connection;
+    $categoryId = validate($categoryId);
+    $query = "SELECT * FROM `products` WHERE `category_id` = '$categoryId'";
+    return mysqli_query($connection, $query);
+}
 
-    unset($_SESSION['loggedIn']);
-    unset($_SESSION['loggedInUser']);
-    session_destroy();
+function getWarehouseProducts($id){
+    global $connection ;
+  
+    $id = validate($id);
+
+    $query = "SELECT p.id,p.image,p.price, p.name, wp.quantity FROM warehouseproducts wp
+     INNER JOIN products p ON wp.product_id = p.id WHERE wp.warehouse_id = '$id'";
+     return mysqli_query($connection, $query);
+}
+
+
+
+function jsonResponse($status,$status_type,$message){
+    $response = [ 
+        'status' => $status,
+        'status_type'=> $status_type,
+        'message' => $message
+    ];
+    echo json_encode($response);
+    return;
 }
