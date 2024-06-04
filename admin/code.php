@@ -206,12 +206,13 @@ if (isset($_POST['saveProduct'])) {
     $price = validate($_POST['price']);
     $quantity = validate($_POST['quantity']);
     $status = isset($_POST['status']) == true ? 1 : 0;
+    $barcode = validate($_POST['barcode']) ;//ADD  qrcode to database 
    
     if (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
 
         $path = "../assets/uploads/products/";
 
-        // Create the directory if it does not exist
+      
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
         }
@@ -237,6 +238,23 @@ if (isset($_POST['saveProduct'])) {
         $finalImage = '';
     }
 
+    //check the barcode 
+    if($barcode != '') {
+        if(strlen($barcode) != 10 || !ctype_digit($barcode)){
+            redirect('admins-create.php', 'barcode number must be exactly 10 digits.');
+        }
+
+        $barcodeCheck = "SELECT * FROM products WHERE barcode = '$barcode' ";
+        $barcodeResult = mysqli_query($connection , $barcodeCheck);
+
+        if(mysqli_num_rows($barcodeResult)){
+            redirect('products-create.php', 'barcode already exists');
+        }
+    }
+
+    // move it to view 
+
+
     $data = [
         'category_id' => $category_id,
         'name' => $name,
@@ -244,9 +262,11 @@ if (isset($_POST['saveProduct'])) {
         'image' => $finalImage,
         'price' => $price,
         'quantity' => $quantity,
+        'barcode' => $barcode,
         'status' => $status,
     ];
 
+   
     $result = insert('products', $data);
 
 
@@ -276,7 +296,7 @@ if (isset($_POST['updateProduct'])) {
     if (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
         $path = "../assets/uploads/products/";
 
-        // Create the directory if it does not exist
+       
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
         }
@@ -371,7 +391,7 @@ if (isset($_POST['updateCustomer'])) {
     $phone = validate($_POST['phone']);
     $status = isset($_POST['status']) ? 1 : 0;
 
-    // Check if email is already used by another customer
+    // Check  customer
     $emailCheckQuery = "SELECT * FROM customers WHERE email = '$email' AND id != '$customerId'";
     $emailCheckResult = mysqli_query($connection, $emailCheckQuery);
 
@@ -479,7 +499,7 @@ if(isset($_POST['saveWarehouse'])){
                         'quantity' => $quantity
                     ];
     
-                    // Insert the data into the relevant table, assuming there's a function to handle this
+                    
                     $result = insert('warehouseProducts', $data);
     
                     if ($result) {
@@ -499,6 +519,8 @@ if(isset($_POST['saveWarehouse'])){
     }
 
     
+// the scanner function 
+
 
 ?>
 

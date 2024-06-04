@@ -1,5 +1,6 @@
 <?php
 include 'includes/header.php';
+include 'phpbarcode/barcodelib.php';
 ?>
 <div class="container-fluid px-4 mt-4   ">
 
@@ -47,17 +48,19 @@ $categories = getAll('categories');
                         <th>Name</th>
                         <th>quantity</th>
                         <th>price</th>
+                        <th>barcode</th>
                         <th>status</th>
                         <th>action</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>id</th>
+                    <th>id</th>
                         <th>Image</th>
                         <th>Name</th>
                         <th>quantity</th>
                         <th>price</th>
+                        <th>barcode</th>
                         <th>status</th>
                         <th>action</th>
                     </tr>
@@ -65,16 +68,22 @@ $categories = getAll('categories');
                 <tbody>
                     <?php
                     
-$categoryId = isset($_GET['category_id']) ? validate($_GET['category_id']) : '';
+                        $categoryId = isset($_GET['category_id']) ? validate($_GET['category_id']) : '';
 
-if (!empty($categoryId)) {
-    $products = getByCategory($categoryId);
-} else {
-    $products = getAll('products');
-}
-                    
+                        if (!empty($categoryId)) {
+                            $products = getByCategory($categoryId);
+                        } else {
+                            $products = getAll('products');
+                        }
+                                            
                     if (mysqli_num_rows($products) > 0) { ?>
                         <?php foreach ($products as $product) : ?>
+                            <?php
+                            if (is_numeric($product['barcode'])) {
+                                $generator = new \Picqer\Barcode\BarcodeGeneratorSVG();
+                                $barcodeImage = $generator->getBarcode($product['barcode'], $generator::TYPE_CODE_128);
+                            }
+                            ?>
                             <tr>
                                 <td><?= $product['id'] ?></td>
                                 <td>
@@ -83,7 +92,10 @@ if (!empty($categoryId)) {
                                 <td><?= $product['name'] ?></td>
                                 <td><?= $product['quantity'] ?></td>
                                 <td><?= $product['price'] ?> $$</td>
-                                <td><?php
+                                <td><?= isset($barcodeImage) ? $barcodeImage : 'N/A' ?></td>
+
+
+                                     <td><?php
                                     if ($product['status'] == 1) {
                                         echo '<span class="badge bg-danger">Hidden</span>';
                                     } else {

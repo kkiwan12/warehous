@@ -22,7 +22,10 @@
    <script src="assets/demo/chart-bar-demo.js"></script>-->  
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="assets/js/datatables-simple-demo.js"></script>
-        <script>
+        <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+
+       <script>
             $(document).ready(function() {
                 $('.select2').select2();
             });

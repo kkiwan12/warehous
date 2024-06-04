@@ -8,7 +8,7 @@ include 'includes/header.php';
             <h4 class="mb-0">Add product 
                 <a href="products.php" class="btn btn-outline-danger float-end">Back</a>
             </h4>
-        </div>
+        </div> 
         <div class="card-body">
             <?php alertMessage() ?>
             <form action="code.php" method="POST" enctype="multipart/form-data">
@@ -46,6 +46,13 @@ include 'includes/header.php';
                         <div class="form-floating ">
                             <textarea name="description" class="form-control" rows="3"  placeholder="description" ></textarea>
                             <label >product description</label>
+                        </div>
+                    </div>
+                              
+                    <div class="col-md-12 mb-3">
+                        <div class="form-floating ">
+                            <input type="text" name="barcode" class="form-control"  placeholder="name" required>
+                            <label >product barcode</label>
                         </div>
                     </div>
                     

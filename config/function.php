@@ -220,11 +220,12 @@ function getWarehouseProducts($id){
 
 
 
-function jsonResponse($status,$status_type,$message){
+function jsonResponse($status,$status_type,$message,$data =null){
     $response = [ 
         'status' => $status,
         'status_type'=> $status_type,
-        'message' => $message
+        'message' => $message,
+        'data'=>$data
     ];
     echo json_encode($response);
     return;

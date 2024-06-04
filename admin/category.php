@@ -43,7 +43,7 @@ include 'includes/header.php';
                                         <tr>
                                             <td><?= $category['id'] ?></td>
                                             <td><?= $category['categoryName'] ?></td>
-                                            <td><?= $category['description'] ?></td>
+                                            <td><?= isset($category['description']) ? $category['description'] : 'n/a' ?></td>
                                             <td><?php 
                                             if($category['status'] == 1){
                                                echo '<span class="badge bg-danger">Hidden</span>';

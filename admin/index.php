@@ -1,5 +1,6 @@
 <?php
 include 'includes/header.php';
+//
 if(isset($_SESSION['status'])){
     unset($_SESSION['status']); 
 }
@@ -13,7 +14,7 @@ if(isset($_SESSION['status'])){
                         <div class="row">
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-primary text-white mb-4">
-                                    <div class="card-body">Number of adsmins</div>
+                                    <div class="card-body">admins/staff</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                     <?php $adminsCount = countRecords('admins') ?>
                                         <a class="small text-white stretched-link" href="#"><?= $adminsCount ?></a>
@@ -24,7 +25,7 @@ if(isset($_SESSION['status'])){
                             </div>
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-warning text-white mb-4">
-                                    <div class="card-body">Number of categories</div>
+                                    <div class="card-body"> categories</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                     <?php $categoriesCount = countRecords('categories') ?>
                                         <a class="small text-white stretched-link" href="#"><?= $categoriesCount ?></a>
@@ -34,7 +35,7 @@ if(isset($_SESSION['status'])){
                             </div>
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-success text-white mb-4">
-                                    <div class="card-body">Number of products</div>
+                                    <div class="card-body"> products</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                     <?php $productsCount = countRecords('categories') ?>
                                         <a class="small text-white stretched-link" href="#"><?= $productsCount ?></a>
@@ -44,9 +45,10 @@ if(isset($_SESSION['status'])){
                             </div>
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-danger text-white mb-4">
-                                    <div class="card-body">Danger Card</div>
+                                    <div class="card-body">warehouse</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
+                                    <?php $warehouseCount = countRecords('warehouses') ?>
+                                        <a class="small text-white stretched-link" href="#"><?= $warehouseCount ?></a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                     </div>
                                 </div>

@@ -164,3 +164,4 @@ function changeImage(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
