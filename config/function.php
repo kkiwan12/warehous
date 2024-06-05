@@ -220,6 +220,8 @@ function getWarehouseProducts($id){
 
 
 
+
+
 function jsonResponse($status,$status_type,$message,$data =null){
     $response = [ 
         'status' => $status,
@@ -229,4 +231,21 @@ function jsonResponse($status,$status_type,$message,$data =null){
     ];
     echo json_encode($response);
     return;
+}
+
+
+function availableChecks($tableName,$id){
+    global $connection ;
+    $table = validate($tableName);
+    $id = validate($id);
+
+    $query = "SELECT * FROM $table WHERE $id = '$id' AND status = 0 limit 1";
+    $result = mysqli_query($connection , $query);
+    if(mysqli_num_rows($result) > 0 ){
+        return $result;
+    }else{
+        echo "Error: " . mysqli_error($connection);
+        return '<h5>No records found</h5>';
+    }
+
 }

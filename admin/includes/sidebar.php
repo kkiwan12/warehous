@@ -7,17 +7,18 @@
                                 <div class="sb-nav-link-icon"><i class="bi bi-gear-wide"></i></i></div>
                                 Dashboard
                             </a>
+                               
+                            <a class="nav-link" href="warehouse-management.php">
+                                <div class="sb-nav-link-icon"><i class="bi bi-receipt"></i></div>
+                                Warehouse management
+                            </a>
 
                             <a class="nav-link" href="scan.php">
                                 <div class="sb-nav-link-icon"><i class="bi bi-camera"></i></i></i></div>
                                 Scaner
                             </a>
                             
-                            
-                            <a class="nav-link" href="orders-create.php">
-                                <div class="sb-nav-link-icon"><i class="bi bi-receipt"></i></div>
-                                Create Order
-                            </a>
+                         
                             <a class="nav-link" href="orders.php">
                                 <div class="sb-nav-link-icon"><i class="fa fa-list"></i></i></div>
                                 Orders

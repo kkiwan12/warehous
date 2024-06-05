@@ -10,46 +10,122 @@ include 'includes/header.php';
         <!-- scaner col -->
         <div class="col-md-12 ">
             <div class="card mt-4  shadow-sm">
-                <div class="card-header  text-bg-warning fw-bold ">The products scanner </div>
+                <div class="card-header  text-bg-warning text-center fs-3 ">The products scanner </div>
 
 
                 <div class="card-body">
+                    <div class="col-md-12">
+                        <div class="scanner-container">
+                            <div id="interactive" class="viewport"></div>
+                        </div>
 
-                    <div class="scanner-container">
-                        <div id="interactive" class="viewport"></div>
+                        <form action="code.php" method="POST" id="form">
+
+                            <input type="hidden" id="id_siswa" name="id_siswa">
+                        </form>
                     </div>
-
-                    <form action="code.php" method="POST" id="form">
-
-                        <input type="hidden" id="id_siswa" name="id_siswa">
-                    </form>
+                    <p class="text-center fs-3">scann products to create order </p>
 
                 </div>
 
             </div>
         </div>
 
-        <!-- scane result  -->
-        <div class="col-md-12">
-            <div class="card mt-4 shadow-sm mb-4">
-                <div class="card-header text-bg-primary">The scan result </div>
-                <div class="card-body">
-                    <table class="table table-borderless">
-                        <thead>
-                            <tr>
-                                <th scope="col">image</th>
-                                <th scope="col">name</th>
-                                <th scope="col">price</th>
-                                <th scope="col">quantity</th>
-                                <th scope="col">category</th>
-                            </tr>
-                        </thead>
-                        <tbody id="products-card">
-                        </tbody>
-                    </table>
+        <form action="scan-code.php" method="POST">
+            <!-- scane result  -->
+            <div class="col-md-12">
+                <div class="card mt-4 shadow-sm mb-4">
+                    <div class="card-header text-bg-primary text-center fs-3">The scan result </div>
+                    <div class="card-body">
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th scope="col">image</th>
+                                    <th scope="col">name</th>
+                                    <th scope="col">price</th>
+                                    <th scope="col">quantity</th>
+                                    <th scope="col">Total price</th>
+                                  
+                                </tr>
+                            </thead>
+                            <tbody id="products-card">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <audio id="scan-sound" src="assets/sounds/scan-sound.mp3" preload="auto"></audio>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card mt-4 shadow-sm mb-4">
+                    <div class="card-header text-bg-dark text-center fs-3">Create order </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="">select customer</label>
+                                <select name="customer_id" class="form-control select2 ">
+                                    <option value=" ">-select customer-</option>
+                                    <?php
+                                    $customers = getAll('customers');
+                                    if ($customers) {
+                                        if (mysqli_num_rows($customers) > 0) {
+                                            foreach ($customers as $customer) {
+                                    ?>
+                                                <option value="<?= $customer['id'] ?>"><?= $customer['name'] ?></option>
+                                    <?php
+                                            }
+                                        } else {
+                                            echo '<option value=""> NO customers found</option>';
+                                        }
+                                    } else {
+                                        echo '<option value="">somthing went wrong</option>';
+                                    }
+                                    ?>
+
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="">select warehouse</label>
+                                <select name="warehouse_id" class="form-control select2 ">
+                                    <option value="">-select warehouse-</option>
+                                    <?php
+                                    $warehouses = getAll('warehouses');
+                                    if ($warehouses) {
+                                        if (mysqli_num_rows($warehouses) > 0) {
+                                            foreach ($warehouses as $warehouse) {
+                                    ?>
+                                                <option value="<?= $warehouse['id'] ?>"><?= $warehouse['name'] ?></option>
+                                    <?php
+                                            }
+                                        } else {
+                                            echo '<option value=""> NO warehouses found</option>';
+                                        }
+                                    } else {
+                                        echo '<option value="">somthing went wrong</option>';
+                                    }
+                                    ?>
+
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="">Select payment mode </label>
+                                <select name="payment_mode" class="form-select">
+                                    <option value="">-Select payment-</option>
+                                    <option value="cash">Cash payment</option>
+                                    <option value="online">online payment</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <br />
+                                <button type="submit" name="createOrder" class="btn btn-warning w-100 proceedToPlace">proceed to plase order</button>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 
 
@@ -65,6 +141,7 @@ include 'includes/header.php';
         let lastScanTime = 0;
         const delayBetweenScans = 2000;
         const scannedProducts = {};
+        const scanSound = document.getElementById('scan-sound');
 
         Quagga.init({
             inputStream: {
@@ -93,23 +170,23 @@ include 'includes/header.php';
 
             const currentTime = Date.now();
             var code = result.codeResult.code;
-            
+
             if (currentTime - lastScanTime < delayBetweenScans) {
 
                 return;
             }
 
-     
-   
+
+
 
             lastScanTime = currentTime;
-           
+
 
             var code = result.codeResult.code;
             console.log(code);
             document.getElementById('id_siswa').value = code;
 
-       
+
 
             $.ajax({
                 url: 'scan-code.php',
@@ -121,37 +198,49 @@ include 'includes/header.php';
                     response = JSON.parse(response);
                     if (response.status == 200) {
                         let productDetails = response.data;
-                                if (scannedProducts[code]) {
-                                    scannedProducts[code].quantity += 1; // Increment quantity
-                                } else {
-                                    scannedProducts[code] = {
-                                        name: productDetails.name,
-                                        price: productDetails.price,
-                                        image: productDetails.image,
-                                        categoryName: productDetails.categoryName,
-                                        quantity: 1 // Initial quantity
-                                    };
-                                }
-                        const existingRow = $(`#products-card tr[data-id='${code}']`);
-                                if (existingRow.length > 0) {
-                                    // Update quantity if product already exists in the table
-                                    const quantityCell = existingRow.find('.quantity-cell');
-                                    let currentQuantity = parseInt(quantityCell.text());
-                                    quantityCell.text(currentQuantity + 1);
-                                } else {
+                        if (scannedProducts[code]) {
+                            scannedProducts[code].quantity += 1; // Increment quantity
+                        } else {
+                            scannedProducts[code] = {
+                                id: productDetails.id,
+                                name: productDetails.name,
+                                price: productDetails.price,
+                                image: productDetails.image,
+                               
+                                quantity: 1 // Initial quantity
+                            };
+                        }
 
-                        $('#products-card').append(`
-                        <tr data-id=`+code+`>
+
+                        const totalPrice = scannedProducts[code].quantity * scannedProducts[code].price;
+                        const existingRow = $(`#products-card tr[data-id='${code}']`);
+
+
+                        if (existingRow.length > 0) {
+                            // Update quantity 
+                            const quantityCell = existingRow.find('.quantity-cell');
+                            const totalPriceCell = existingRow.find('.total-price-cell');
+                            let currentQuantity = parseInt(quantityCell.text());
+                            quantityCell.text(currentQuantity + 1);
+                            totalPriceCell.text(totalPrice.toFixed(1) + ' $');
+                        } else {
+
+                            $('#products-card').append(`
+                        <tr data-id=` + code + `>
                         <td>  <img src="` + response.data.image + `" style="width: 50px; height: 50px;" alt=""></td>
                         <th scope="row">` + response.data.name + `</th>
                         
                         <td>` + response.data.price + ` $</td>
                         <td class="quantity-cell">${scannedProducts[code].quantity}</td>
-                        <td>` + response.data.categoryName + `</td>
-                        <input type="hidden" name="id[`+response.data.id+`]" value="`+response.data.id+`">
-                        <input type="hidden" name="quantity[`+response.data.id+`]" value="`+scannedProducts[code].quantity+`">
+                        <td class="total-price-cell">${totalPrice.toFixed(1)} $</td>
+                      
+               
+                        <input type="hidden" name="id[` + response.data.id + `]" value="` + response.data.id + `">
+                        <input type="hidden" name="quantity[` + response.data.id + `]" value="` + scannedProducts[code].quantity + `">
                         </tr>
-                    `);}
+                    `);
+                        }
+                        scanSound.play();
                     } else {
                         alert(response.message)
                     }

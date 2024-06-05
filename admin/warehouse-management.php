@@ -178,8 +178,8 @@ include 'includes/header.php';
                                          
                                             <td>
                                                 
-                                                <a href="warehouse-edit.php?id=<?=  $item['id']; ?>" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
-                                                <a href="warehouse-delete.php?id=<?=  $item['id']; ?>" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></a>
+                                              <!--  <a href="warehouse-products-edit.php?id=<?=  $item['id']; ?>" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></a> -->
+                                                <a href="warehouse-products-delete.php?id=<?=  $item['id']; ?>&w-id=<?= $warehouseId ?>" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></a>
                                             </td>
                                        
                                         </tr>

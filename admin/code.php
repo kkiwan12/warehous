@@ -493,6 +493,23 @@ if(isset($_POST['saveWarehouse'])){
                     if ($row['quantity'] < $quantity) {
                         redirect('warehouse-management.php', 'Only  ' . $row['quantity'] . '  quantity available');
                     }
+                    // check if the product is already in the warehouse and update  the quantity
+                    $warehouseProductCheck = "SELECT * FROM `warehouseProducts` WHERE `warehouse_id` = '$warehouseId' AND `product_id` = '$productId' LIMIT 1";
+                    $warehouseProductCheckResult = mysqli_query($connection, $warehouseProductCheck);
+                    if ($warehouseProductCheckResult && mysqli_num_rows($warehouseProductCheckResult) > 0) {
+
+
+                        $existingWarehouseProduct = mysqli_fetch_array($warehouseProductCheckResult);
+                        $newQuantity = $existingWarehouseProduct['quantity'] + $quantity;
+                        $updateQuery = "UPDATE `warehouseProducts` SET `quantity` = '$newQuantity' WHERE `warehouse_id` = '$warehouseId' AND `product_id` = '$productId'";
+                        $updateResult = mysqli_query($connection, $updateQuery);
+
+                        if ($updateResult) {
+                            redirect('warehouse-management.php?id=' . $warehouseId, 'Product quantity updated successfully');
+                        }
+                    }else{
+
+                    
                     $data = [
                         'warehouse_id' => $warehouseId,
                         'product_id' => $productId,
@@ -501,7 +518,7 @@ if(isset($_POST['saveWarehouse'])){
     
                     
                     $result = insert('warehouseProducts', $data);
-    
+                }
                     if ($result) {
                         redirect('warehouse-management.php?id=' . $warehouseId, 'Product added to warehouse successfully');
                     } else {
@@ -519,7 +536,7 @@ if(isset($_POST['saveWarehouse'])){
     }
 
     
-// the scanner function 
+
 
 
 ?>
