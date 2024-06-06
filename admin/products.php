@@ -1,11 +1,21 @@
 <?php
 include 'includes/header.php';
 include 'phpbarcode/barcodelib.php';
+$produCount = countRecords('products');
 ?>
+<div class="container mt-5">
+          <div class="row">
+            <div class="col-md-6">
+            <div class="badge bg-danger "><?= $produCount ?></div>
+                <h1><i class="bi bi-shop-window"></i> Products </h1>
+                
+            </div>
+          </div>
+</div>
 <div class="container-fluid px-4 mt-4   ">
 
 <div class="card mb-4">
-<div class="card-header">
+<div class="card-header text-bg-primary">
     categories
 </div>
 <div class="card-body">
@@ -29,7 +39,7 @@ $categories = getAll('categories');
 
     <div class="card mb-4">
 
-        <div class="card-header">
+        <div class="card-header text-bg-warning">
             <?php alertMessage() ?>
             <i class="fas fa-table me-1"></i>
             The Products

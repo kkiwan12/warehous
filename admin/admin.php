@@ -1,10 +1,20 @@
 <?php 
 include 'includes/header.php';
+$adminsCount = countRecords('admins');
 ?>
+<div class="container mt-5">
+          <div class="row">
+            <div class="col-md-6">
+            <div class="badge bg-danger "><?= $adminsCount ?></div>
+                <h1><i class="bi bi-people"></i> Admins/staff </h1>
+             
+            </div>
+          </div>
+</div>
 <div class="container-fluid px-4 mt-4   ">
 <div class="card mb-4">
 
-                            <div class="card-header">
+                            <div class="card-header bg-warning"">
                             <?php alertMessage() ?>
                                 <i class="fas fa-table me-1"></i>
                                 The admins 
@@ -14,8 +24,8 @@ include 'includes/header.php';
                                 </svg></a>
                             </div>
                             <div class="card-body">
-                                <table id="datatablesSimple">
-                                    <thead>
+                                <table id="datatablesSimple" >
+                                    <thead >
                                         <tr>
                                             <th>id</th>
                                             <th>Name</th>

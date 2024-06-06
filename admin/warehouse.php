@@ -1,6 +1,16 @@
 <?php 
 include 'includes/header.php';
+$warehousesCount = countRecords('warehouses');
 ?>
+<div class="container mt-5">
+          <div class="row">
+            <div class="col-md-6">
+            <div class="badge bg-danger "><?= $warehousesCount ?></div>
+                <h1><i class="bi bi-archive"></i> Warehouses </h1>
+               
+            </div>
+          </div>
+</div>
 <div class="container-fluid px-4 mt-4   ">
 <div class="card mb-4">
 

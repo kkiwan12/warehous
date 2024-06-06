@@ -218,7 +218,19 @@ function getWarehouseProducts($id){
      return mysqli_query($connection, $query);
 }
 
-
+function countProductsInWarehouse( $warehouseId) {
+    global $connection;
+    $query = "SELECT COUNT(*) AS product_count
+              FROM warehouseProducts
+              WHERE warehouse_id = ?";
+    $stmt = mysqli_prepare($connection, $query);
+    mysqli_stmt_bind_param($stmt, 'i', $warehouseId);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $productCount);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+    return $productCount;
+}
 
 
 

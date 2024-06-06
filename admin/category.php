@@ -1,10 +1,22 @@
 <?php 
 include 'includes/header.php';
+$categoriesCount =countRecords('categories');
 ?>
+
+<div class="container mt-5">
+          <div class="row">
+            <div class="col-md-6">
+            <div class="badge bg-danger "><?= $categoriesCount ?></div>
+                <h1><i class="bi bi-tags-fill"></i> Categories </h1>
+                
+            </div>
+          </div>
+</div>
+
 <div class="container-fluid px-4 mt-4   ">
 <div class="card mb-4">
 
-                            <div class="card-header">
+                            <div class="card-header bg-warning">
                             <?php alertMessage() ?>
                                 <i class="fas fa-table me-1"></i>
                                 The categories 

@@ -1,5 +1,6 @@
 <?php
 include 'includes/header.php';
+
 ?>
 <div class="container-fluid px-4 " >
     <div class="card mb-4 mt-3">
@@ -40,23 +41,25 @@ include 'includes/header.php';
                     if (!empty($warehouseId)) {
                         $warehouse = getById('warehouses', $warehouseId);
                         if ($warehouse) {
+
+                            $productsCount = countProductsInWarehouse($warehouseId);
                            
                             // Add more fields as necessary?>
                          <div class="row">
                             <div class="col-md-4 p-3">
-                            <div class="card" style="width: 18rem;">
+                            <div class="card" style="width: 18rem; ">
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Warehouse Name:</li>
-                                <li class="list-group-item"><?= $warehouse['data']['name'] ?></li>
+                                <li class="list-group-item">Warehouse Name: <span class="badge bg-dark "><?= $warehouse['data']['name'] ?></span></li>
+                               
                               
                             </ul>
                             </div>
                             </div>
                             <div class="col-md-4 p-3">
-                            <div class="card" style="width: 18rem;">
+                            <div class="card " style="width: 18rem;">
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Warehouse location:</li>
-                                <li class="list-group-item"><?= $warehouse['data']['location'] ?></li>
+                                <li class="list-group-item">Warehouse location: <span class="badge bg-dark "><?= $warehouse['data']['location'] ?></span> </li>
+                              
                               
                             </ul>
                             </div>
@@ -65,8 +68,8 @@ include 'includes/header.php';
                             <div class="col-md-4 p-3">
                             <div class="card" style="width: 18rem;">
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">count of products:</li>
-                                <li class="list-group-item">32</li>
+                                <li class="list-group-item">count of products: <span class="badge bg-dark "><?= $productsCount ?></span> </li>
+                                
                               
                             </ul>
                             </div>
