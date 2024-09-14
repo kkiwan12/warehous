@@ -63,14 +63,14 @@ if (isset($_POST['createOrder'])) {
         redirect('scan.php', 'this customer is not available');
     }
 
-
     foreach ($_POST['id'] as $id => $productId) {
 
         $quantity = validate($_POST['quantity'][$id]);
         $product = getById('products', $productId);
 
         $totalprice =  $product['data']['price'] * $quantity;
-
+        $profit = $product['data']['price'] - $product['data']['cost'];
+        $profit = $profit * $quantity;
         //check the product quantity in the warehouse
 
         $checkProductQuantity = "SELECT * FROM warehouseProducts WHERE product_id = $productId AND warehouse_id = $warehouseId limit 1";
@@ -79,7 +79,7 @@ if (isset($_POST['createOrder'])) {
 
             $warehouseProduct = mysqli_fetch_array($checkProductQuantityResult);
             if ($warehouseProduct['quantity'] < $quantity) {
-                redirect('sacn.php', 'there are no enough' . $product['data']['name'] . ' quantities available in this warehouse');
+                redirect('scan.php', 'there are no enough ' . $product['data']['name'] . ' quantities available in this warehouse');
             }
         } else {
             redirect('scan.php', 'the ' . $product['data']['name'] . ' is not available in this warehouse');
@@ -108,7 +108,8 @@ if (isset($_POST['createOrder'])) {
             'order_id' => $orderId,
             'product_id' => $productId,
             'quantity' => $quantity,
-            'total_price' => $totalprice
+            'total_price' => $totalprice,
+            'profit'=>$profit
         ];
 
         $OrderResult = insert('orderInfo', $data);
@@ -128,7 +129,16 @@ if (isset($_POST['createOrder'])) {
         $totalAmountRow = mysqli_fetch_assoc($totalAmountResult);
         $totalAmount = $totalAmountRow['total_amount'];
 
-        $updateOrderQuery = "UPDATE orders SET total_amount = $totalAmount WHERE id = $orderId";
+        $totalProfitQuery = "SELECT SUM(profit) as total_profit FROM orderInfo WHERE order_id = $orderId";
+        $totalProfitResult = mysqli_query($connection, $totalProfitQuery);
+        if($totalProfitResult){
+            $totalProfitRow = mysqli_fetch_assoc($totalProfitResult);
+            $totalprofit = $totalProfitRow['total_profit'];
+        }else{
+            redirect('scan.php', 'Failed to calculate the order total profit');
+        }
+        
+        $updateOrderQuery = "UPDATE orders SET total_amount = $totalAmount, total_profit = $totalprofit WHERE id = $orderId";
         $updateOrderResult = mysqli_query($connection, $updateOrderQuery);
 
         if (!$updateOrderResult) {
@@ -156,6 +166,7 @@ if (isset($_POST['createOrder'])) {
     $orderProductsResult = mysqli_query($connection, $orderProductsQuery);
     $orderProducts = mysqli_fetch_all($orderProductsResult, MYSQLI_ASSOC);
 
+    calculateAndUpdateMonthlyIncome();
     require('fpdf.php');
 
     class PDF extends FPDF
@@ -250,5 +261,7 @@ if (isset($_POST['createOrder'])) {
     } else {
         echo "Failed to save the invoice path.";
     }
+
+
 }
 

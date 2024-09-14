@@ -6,25 +6,30 @@ $ordersCount = countRecords('orders');
           <div class="row">
             <div class="col-md-6">
             <div class="badge bg-danger "><?= $ordersCount ?></div>
-                <h1><i class="bi bi-list-ul"></i> Orders   </h1>
+                <h1><i class="bi bi-list-ul"></i> Orders 
+                <a href="scan.php" class="btn btn-dark btn-sm rounded-5"><i class="bi bi-plus-lg"></i></a>
+              </h1>
             
             </div>
           </div>
 </div>
 
 <div class="container-fluid px-4 mt-4   ">
-    <div class="card mb-4">
+<div class="shadow p-3 mb-4 bg-body-tertiary rounded-4  "  >
+    <div class="card-borderless text-center">
 
-        <div class="card-header bg-warning">
+        <div class="card-title text-warning mb-3 ">
             <?php alertMessage() ?>
             <i class="fas fa-table me-1"></i>
-            The Orders Manager
+            The Orders Manager  
 
-            <a href="scan.php" class="btn btn-dark btn-sm text-end"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                </svg></a>
+           
         </div>
         <div class="card-body">
+        <?php
+            
+            $orders = getAll('orders');
+            if (mysqli_num_rows($orders) > 0) { ?>
             <table id="datatablesSimple"   class="display compact" style="width:100%" >
                 <thead>
                     <tr>
@@ -33,6 +38,7 @@ $ordersCount = countRecords('orders');
                         <th>Customer </th>
                         <th>Payment type</th>
                         <th>Total amount</th>
+                    
                         <th>Status</th>
                         <th>Created at</th>
                         <th>Action</th>
@@ -45,16 +51,14 @@ $ordersCount = countRecords('orders');
                         <th>Customer </th>
                         <th>Payment type</th>
                         <th>Total amount</th>
+                     
                         <th>Status</th>
                         <th>Created at</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>
                 <tbody>
-                    <?php
-            
-                    $orders = getAll('orders');
-                    if (mysqli_num_rows($orders) > 0) { ?>
+                 
 
                         <?php foreach ($orders as $order) {
                             
@@ -69,6 +73,7 @@ $ordersCount = countRecords('orders');
                                 <td><?= $customer['data']['name'] ?></td>
                                 <td><?= $order['payment_type'] ?></td>
                                 <td><?= $order['total_amount'] ?> $$</td>
+                              
                                 <td><?php
                                     if ($order['status'] == 1) {
                                         echo '<span class="badge  bg-success">Delivered</span>';
@@ -79,8 +84,8 @@ $ordersCount = countRecords('orders');
                                 <td><?= $order['created_at'] ?></td>
                                 <td>
                                    
-                                    <a href="orders-delete.php?id=<?= $order['id']; ?>" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></a>
-                                    <a href="orders-edit.php?id=<?= $order['id']; ?>" class="btn btn-primary btn-sm">delivery <i class="bi bi-truck"></i></a>
+                                    <a href="orders-delete.php?id=<?= $order['id']; ?>" class="btn btn-danger btn-sm rounded-5"><i class="bi bi-trash"></i></a>
+                                    <a href="orders-edit.php?id=<?= $order['id']; ?>" class="btn btn-primary btn-sm rounded-5">delivery <i class="bi bi-truck"></i></a>
 
                                 </td>
 
@@ -97,6 +102,7 @@ $ordersCount = countRecords('orders');
         </tr>
     <?php } ?>
     </div>
+</div>
 </div>
 <?php
 include 'includes/footer.php';

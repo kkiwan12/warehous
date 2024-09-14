@@ -1,21 +1,25 @@
 <?php
 include 'includes/header.php';
 ?>
-<div class="container-fluid px-4 mt-4  justify-content-center ">
+<div class="container-fluid px-4  justify-content-center " style="max-width: 1500px;">
     <?php alertMessage(); ?>
 
 
 
     <div class="row">
         <!-- scaner col -->
-        <div class="col-md-12 ">
-            <div class="card mt-4  shadow-sm">
-                <div class="card-header  text-bg-warning text-center fs-3 ">The products scanner </div>
+        <div class="col-md-12  text-center">
+        <div class="shadow p-3 mb-4 bg-body-tertiary rounded-bottom   ">
+            <div class="card-borderless text-center">
+                
+                <h4 class="card-title text-warning mb-3 ">
+                <i class="bi bi-upc-scan"></i> The products scanner
+                </h4>
 
 
                 <div class="card-body">
                     <div class="col-md-12">
-                        <div class="scanner-container">
+                        <div class="scanner-container text-center" style="width :990px;">
                             <div id="interactive" class="viewport"></div>
                         </div>
 
@@ -24,11 +28,12 @@ include 'includes/header.php';
                             <input type="hidden" id="id_siswa" name="id_siswa">
                         </form>
                     </div>
-                    <p class="text-center fs-3">scann products to create order </p>
+                    <p class="text-center fs-5">scann products to create order </p>
 
                 </div>
 
             </div>
+        </div>
         </div>
 
         <form action="scan-code.php" method="POST">
@@ -57,13 +62,13 @@ include 'includes/header.php';
             </div>
 
             <div class="col-md-12">
-                <div class="card mt-4 shadow-sm mb-4">
-                    <div class="card-header text-bg-dark text-center fs-3">Create order </div>
+                <div class="card mt-4 shadow-sm mb-4 rounded-4">
+                    <div class="card-header text-bg-dark text-center fs-3 ">Create order </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-3">
-                                <label for="">select customer</label>
-                                <select name="customer_id" class="form-control select2 ">
+                            <div class="col-md-4">
+                                <label for="customer_id">select customer :</label>
+                                <select name="customer_id" class="form-select select2 w-50 text-center">
                                     <option value=" ">-select customer-</option>
                                     <?php
                                     $customers = getAll('customers');
@@ -84,9 +89,9 @@ include 'includes/header.php';
 
                                 </select>
                             </div>
-                            <div class="col-md-3">
-                                <label for="">select warehouse</label>
-                                <select name="warehouse_id" class="form-control select2 ">
+                            <div class="col-md-4">
+                                <label for="">select warehouse :</label>
+                                <select name="warehouse_id" class="form-select select2 w-50 text-center ">
                                     <option value="">-select warehouse-</option>
                                     <?php
                                     $warehouses = getAll('warehouses');
@@ -107,18 +112,18 @@ include 'includes/header.php';
 
                                 </select>
                             </div>
-                            <div class="col-md-3">
-                                <label for="">Select payment mode </label>
-                                <select name="payment_mode" class="form-select">
+                            <div class="col-md-4">
+                                <label for="">Select payment mode :</label>
+                                <select name="payment_mode" class="form-select select2 w-50 text-center">
                                     <option value="">-Select payment-</option>
                                     <option value="cash">Cash payment</option>
                                     <option value="online">online payment</option>
                                 </select>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-12">
                                 <br />
-                                <button type="submit" name="createOrder" class="btn btn-warning w-100 proceedToPlace">proceed to plase order</button>
+                                <button type="submit" name="createOrder" class="btn btn-warning w-100 rounded-4">proceed to plase order</button>
 
                             </div>
                         </div>
@@ -227,7 +232,7 @@ include 'includes/header.php';
 
                             $('#products-card').append(`
                         <tr data-id=` + code + `>
-                        <td>  <img src="` + response.data.image + `" style="width: 50px; height: 50px;" alt=""></td>
+                        <td>  <img src="` + response.data.image + `" style="width: 50px; height: 50px; border-radius: 20%;" alt=""></td>
                         <th scope="row">` + response.data.name + `</th>
                         
                         <td>` + response.data.price + ` $</td>

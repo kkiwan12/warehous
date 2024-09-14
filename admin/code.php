@@ -7,6 +7,7 @@ if (isset($_POST['saveAdmin'])) {
     $email = validate($_POST['email']);
     $password = validate($_POST['password']);
     $phone = validate($_POST['phone']);
+    $salary = validate($_POST['salary']);
     $is_ban = isset($_POST['is_ban']) == true ? 1 : 0;
 
 
@@ -39,6 +40,7 @@ if (isset($_POST['saveAdmin'])) {
             'email' => $email,
             'password' => $hashPassword,
             'phone' => $phone,
+            'salary'=> $salary,
             'is_ban' => $is_ban,
         ];
         $result = insert('admins', $data);
@@ -65,6 +67,7 @@ if (isset($_POST['updateAdmin'])) {
     $email = validate($_POST['email']);
     $password = validate($_POST['password']);
     $phone = validate($_POST['phone']);
+    $salary = validate($_POST['salary']);
     $is_ban = isset($_POST['is_ban']) == true ? 1 : 0;
 
     if (strlen($phone) != 10 || !ctype_digit($phone)) {
@@ -98,6 +101,7 @@ if (isset($_POST['updateAdmin'])) {
             'email' => $email,
             'password' => $hashedPassword,
             'phone' => $phone,
+            'salary'=>$salary,
             'is_ban' => $is_ban,
         ];
         $result = update('admins', $adminId, $data);
@@ -161,7 +165,7 @@ if (isset($_POST['updateCategory'])) {
 
 
     if ($categoryData['status'] != 200) {
-        redirect('category-edit.php?id=' . $categoryId, 'please fill required fields');
+        redirect('category-edit.php?id=' . $categoryId, 'somthing went wrong');
     }
 
     $categoryName = validate($_POST['name']);
@@ -204,6 +208,7 @@ if (isset($_POST['saveProduct'])) {
     $name = validate($_POST['name']);
     $description = validate($_POST['description']);
     $price = validate($_POST['price']);
+    $cost = validate($_POST['cost']);
     $quantity = validate($_POST['quantity']);
     $status = isset($_POST['status']) == true ? 1 : 0;
     $barcode = validate($_POST['barcode']) ;//ADD  qrcode to database 
@@ -261,6 +266,7 @@ if (isset($_POST['saveProduct'])) {
         'description' => $description,
         'image' => $finalImage,
         'price' => $price,
+        'cost' => $cost,
         'quantity' => $quantity,
         'barcode' => $barcode,
         'status' => $status,
@@ -290,6 +296,7 @@ if (isset($_POST['updateProduct'])) {
     $name = validate($_POST['name']);
     $description = validate($_POST['description']);
     $price = validate($_POST['price']);
+    $cost = validate($_POST['cost']);
     $quantity = validate($_POST['quantity']);
     $status = isset($_POST['status']) ? 1 : 0;
 
@@ -324,6 +331,7 @@ if (isset($_POST['updateProduct'])) {
         'description' => $description,
         'image' => $finalImage,
         'price' => $price,
+        'cost' => $cost,
         'quantity' => $quantity,
         'status' => $status,
     ];
@@ -345,6 +353,7 @@ if(isset($_POST['saveCustomer']))
     $name = validate($_POST['name']);
     $email = validate($_POST['email']);
     $phone = validate($_POST['phone']);
+    $password = validate($_POST['password']);
     $status =  isset($_POST['status']) == true ? 1 : 0;
 
     if($name != '' && $email != '' && $phone != '' ){
@@ -361,10 +370,17 @@ if(isset($_POST['saveCustomer']))
             }
         }
 
+        if (strlen($password) < 8) {
+            redirect('customer-create.php', 'The Password must be at least 8 characters');
+        } else {
+            $hashPassword = password_hash($password, PASSWORD_BCRYPT);
+        }
+
         $data = [
             'name' => $name,
             'email' => $email,
             'phone' => $phone,
+            'password' => $hashPassword,
             'status' => $status
         ];
 
@@ -389,6 +405,7 @@ if (isset($_POST['updateCustomer'])) {
     $name = validate($_POST['name']);
     $email = validate($_POST['email']);
     $phone = validate($_POST['phone']);
+    $password = validate($_POST['password']);
     $status = isset($_POST['status']) ? 1 : 0;
 
     // Check  customer
@@ -399,11 +416,23 @@ if (isset($_POST['updateCustomer'])) {
         redirect('customer-edit.php?id=' . $customerId, 'The email is already used by another customer.');
     }
  
+    if ($password != '') {
+
+        if (strlen($password) < 8) {
+            redirect('customer-edit.php?id=' . $customerId, 'The Password must be at least 8 characters');
+        } else {
+            $hashPassword = password_hash($password, PASSWORD_BCRYPT);
+        }
+    } else {
+
+        $hashedPassword = $customerData['data']['password'];
+    }
 
     $data = [
         'name' => $name,
         'email' => $email,
         'phone' => $phone,
+        'password' =>$hashPassword,
         'status' => $status,
     ];
 
@@ -493,7 +522,7 @@ if(isset($_POST['saveWarehouse'])){
                     if ($row['quantity'] < $quantity) {
                         redirect('warehouse-management.php', 'Only  ' . $row['quantity'] . '  quantity available');
                     }
-                    // check if the product is already in the warehouse and update  the quantity
+                 
                     $warehouseProductCheck = "SELECT * FROM `warehouseProducts` WHERE `warehouse_id` = '$warehouseId' AND `product_id` = '$productId' LIMIT 1";
                     $warehouseProductCheckResult = mysqli_query($connection, $warehouseProductCheck);
                     if ($warehouseProductCheckResult && mysqli_num_rows($warehouseProductCheckResult) > 0) {

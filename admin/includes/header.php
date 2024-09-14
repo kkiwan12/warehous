@@ -9,7 +9,8 @@ require 'auth.php';
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>minaitech</title>
+        <title>Taekwondo</title>
+      <link rel="icon" href="../assets/uploads/icons/kiwan.png" sizes="16x16"  type="image/png">
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
        <link href=" https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"/>
         <link href="assets/css/styles.css" rel="stylesheet" />
@@ -27,9 +28,11 @@ require 'auth.php';
   integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
   crossorigin="anonymous"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
    
     </head>
-    <body class="sb-nav-fixed">
+    <body class="sb-nav-fixed ">
       <?php include 'includes/navbar.php'; ?>
       <div id="layoutSidenav">
 

@@ -7,17 +7,21 @@ $produCount = countRecords('products');
           <div class="row">
             <div class="col-md-6">
             <div class="badge bg-danger "><?= $produCount ?></div>
-                <h1><i class="bi bi-shop-window"></i> Products </h1>
-                
+
+                <h1><i class="bi bi-shop-window"></i> Products
+            <a href="products-create.php" class="btn btn-dark btn-sm  rounded-5"><i class="bi bi-plus-lg"></i>
+            </a> 
+            </h1>  
             </div>
           </div>
 </div>
 <div class="container-fluid px-4 mt-4   ">
 
-<div class="card mb-4">
-<div class="card-header text-bg-primary">
-    categories
-</div>
+<div class="shadow p-3 mb-4 bg-body-tertiary rounded">
+<div class="card-borderless text-center">
+<h4 class="card-title text-warning mb-3">
+<i class="bi bi-tags"></i> categories
+</h4>
 <div class="card-body">
 <?php
 $categories = getAll('categories');
@@ -36,17 +40,17 @@ $categories = getAll('categories');
 </select>
 </div>
 </div>
+</div>
 
-    <div class="card mb-4">
+<div class="shadow p-3 mb-4 bg-body-tertiary rounded-4">
+    <div class="card-borderless text-center">
 
-        <div class="card-header text-bg-warning">
+        <div class="card-header ">
             <?php alertMessage() ?>
             <i class="fas fa-table me-1"></i>
             The Products
 
-            <a href="products-create.php" class="btn btn-dark btn-sm text-end"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                </svg></a>
+            
 
         </div>
         <div class="card-body">
@@ -57,6 +61,7 @@ $categories = getAll('categories');
                         <th>Image</th>
                         <th>Name</th>
                         <th>quantity</th>
+                        <th>cost</th>
                         <th>price</th>
                         <th>barcode</th>
                         <th>status</th>
@@ -69,6 +74,7 @@ $categories = getAll('categories');
                         <th>Image</th>
                         <th>Name</th>
                         <th>quantity</th>
+                        <th>cost</th>
                         <th>price</th>
                         <th>barcode</th>
                         <th>status</th>
@@ -97,10 +103,11 @@ $categories = getAll('categories');
                             <tr>
                                 <td><?= $product['id'] ?></td>
                                 <td>
-                                    <img src="<?= $product['image']; ?>" style="width: 50px; height: 50px;" alt="">
+                                    <img src="<?= $product['image']; ?>" style="width: 50px; height: 50px;border-radius: 20%;" alt="">
                                 </td>
                                 <td><?= $product['name'] ?></td>
                                 <td><?= $product['quantity'] ?></td>
+                                <td># <?= $product['cost'] ?></td>
                                 <td><?= $product['price'] ?> $$</td>
                                 <td><?= isset($barcodeImage) ? $barcodeImage : 'N/A' ?></td>
 
@@ -114,8 +121,8 @@ $categories = getAll('categories');
                                     ?></td>
 
                                 <td>
-                                    <a href="products-edit.php?id=<?= $product['id']; ?>" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
-                                    <a href="products-delete.php?id=<?= $product['id']; ?>" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></a>
+                                    <a href="products-edit.php?id=<?= $product['id']; ?>" class="btn btn-primary btn-sm rounded-5"><i class="bi bi-pencil-square"></i></a>
+                                    <a href="products-delete.php?id=<?= $product['id']; ?>" class="btn btn-danger btn-sm rounded-5"><i class="bi bi-trash"></i></a>
                                 </td>
 
                             </tr>
@@ -131,6 +138,8 @@ $categories = getAll('categories');
         </tr>
     <?php } ?>
     </div>
+</div>
+
 </div>
 <?php include 'includes/footer.php' ?>
 

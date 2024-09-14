@@ -3,14 +3,15 @@ include 'includes/header.php';
 
 ?>
 
-<div class="container-fluid px-4">
-    <div class="card mt-4 shadow-sm">
-        <div class="card-header">
-            <h4 class="mb-0">Edit admin
-                <a href="admin.php" class="btn btn-outline-danger float-end">Back</a>
+<div class="container-fluid px-4  mt-4">
+<div class="shadow p-3 mb-4 bg-body-tertiary rounded-4 ">
+    <div class="card-borderless text-center">
+        <div class="card-title text-dark mb-4 ">
+            <h4 class="mb-0"><i class="bi bi-person-gear"></i> Edit admin
+            <a href="admin.php" class="btn btn-outline-danger rounded-5 float-start"><i class="bi bi-arrow-left"></i></a>
             </h4>
         </div>
-        <div class="card-body">
+        <div class="card-text">
             <?php alertMessage() ?>
             <form action="code.php" method="POST">
 
@@ -60,23 +61,27 @@ include 'includes/header.php';
                             <label for="floatingInput">phone</label>
                         </div>
                     </div>
+                    <div class="col-md-6 mb-3">
+                    <label >$ salary</label>
+                    <div class="input-group mb-3">
+              
+                        <span class="input-group-text">$</span>
+                        <input type="text"  name="salary" class="form-control" aria-label="Amount (to the nearest dollar) " value="<?= $adminData['data']['salary'] ?>">
+                        <span class="input-group-text">.00</span>
+                     </div>
+                    </div>
+
                     <div class="col-md-3  mt-3">
                     <div class="form-check form-switch">
-                    <label  for="flexSwitchCheckChecked" style="font:bold">Is Ban</label>
-                    <input 
-                        class="form-check-input" 
-                        name="is_ban" 
-                        type="checkbox" 
-                        role="switch" 
-                        id="flexSwitchCheckChecked" 
-                        value="1" 
-                        <?= $adminData['data']['is_ban'] == true ? 'checked' : ''; ?> 
-                        style="width:30px;height:30px;">
-                        </div>
-                     </div>
-                     <div class="col-md-3 mt-3 text-end">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" name="status" value="1" 
+                        <?= $adminData['data']['is_ban'] == true ? 'checked' : ''; ?>  >
+                    <label class="form-check-label" name="is_ban" for="flexSwitchCheckChecked"><i class="bi bi-person-dash"></i> band the admin</label>
+                    </div>
+                    </div>
+              
+                     <div class="col-md-12 mt-3 text-end">
                         <div class="form-floating ">
-                          <button type="submit" name="updateAdmin" class="btn btn-primary" >Update</button>
+                          <button type="submit" name="updateAdmin" class="btn btn-warning w-100 rounded-4" >Update</button>
                         </div>
                     </div>
                 </div>
@@ -99,5 +104,6 @@ include 'includes/header.php';
   
         </div>
     </div>
+</div>    
 </div>
 <?php include 'includes/footer.php'?>

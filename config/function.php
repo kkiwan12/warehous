@@ -164,6 +164,42 @@ function delete($tableName , $id){
     $query ="DELETE FROM $table WHERE id ='$id' LIMIT 1";
     $result = mysqli_query($connection,$query);
 
+    return $result;                                     
+}
+
+function hasRecord($tableName){
+    global $connection;
+
+    $query ="SELECT COUNT(*) AS count FROM $tableName ";
+    $result= mysqli_query($connection,$query);
+
+    if($result){
+        $row = mysqli_fetch_array($result);
+        return $row['count'] > 0;
+    }else{
+        echo "Query Error: " . mysqli_error($connection);
+        return false;
+    }
+}
+
+
+function deleteInvoicesByPlayerId( $id){
+    global $connection;
+  
+    $id  = validate($id);
+    $query = "DELETE FROM invoices WHERE player_id = '$id'";
+    $result = mysqli_query($connection,$query);
+
+    return $result;
+};
+
+function deletePlayerFromeClass($id){
+
+    global $connection;
+
+    $query = "DELETE FROM plyerclasses WHERE player_id = '$id'";
+    $result = mysqli_query($connection,$query);
+
     return $result;
 }
 
@@ -208,6 +244,30 @@ function getByCategory($categoryId) {
     return mysqli_query($connection, $query);
 }
 
+function getPlayersByClass($classId){
+    global $connection;
+    $classId = validate($classId);
+    $query = "     SELECT players.*
+        FROM players
+        INNER JOIN plyerclasses ON players.id = plyerclasses.player_id
+        WHERE plyerclasses.class_id = '$classId'
+        ";
+    return mysqli_query($connection, $query);
+}
+
+
+function countOfPlayersInClass($classId){
+    global $connection ;
+    $classId = validate($classId);
+    $query = " SELECT COUNT(*) AS count FROM plyerclasses WHERE class_id = '$classId'";
+    $result = mysqli_query($connection ,$query);
+if($result){
+    $row = mysqli_fetch_assoc($result);
+    return $row['count'];
+}else{
+    return 0;
+}
+}
 function getWarehouseProducts($id){
     global $connection ;
   
@@ -261,3 +321,196 @@ function availableChecks($tableName,$id){
     }
 
 }
+
+function getPlayerInvoices($id){
+    global $connection;
+    
+    $query = "SELECT * FROM invoices WHERE player_id = $id";
+    $result = mysqli_query($connection, $query);
+    if(mysqli_num_rows($result) > 0){
+        return $result;
+    }else{
+        return false;
+    }
+}
+function getLatestRecordById($tableName){
+    global $connection ;
+    $table = validate($tableName);
+    $query =  "SELECT * FROM $table ORDER BY id DESC LIMIT 1";
+    $result = mysqli_query($connection, $query);
+    if($result && mysqli_num_rows($result) > 0){
+        return mysqli_fetch_assoc($result);
+    }else{
+        return null;
+    }
+}
+function checkAndUpdatePlayerStatus() {
+    global $connection;
+    
+    // Get all records from the players table
+    $query = "SELECT id, suspended_at, status FROM players";
+    $result = mysqli_query($connection, $query);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+  
+        $currentDate = date('Y-m-d');
+
+        while ($row = mysqli_fetch_assoc($result)) {
+         
+            $playerId = $row['id'];
+            if (!empty($row['suspended_at']) && $row['suspended_at'] < $currentDate) {
+              
+                
+                $updateQuery = "UPDATE players SET status = 1 WHERE id = '$playerId'";
+                mysqli_query($connection, $updateQuery);
+            }elseif($row['suspended_at'] > $currentDate){
+                $updateQuery = "UPDATE players SET status = 0 WHERE id = '$playerId'";
+                mysqli_query($connection, $updateQuery);
+            }
+        }
+    }
+}
+
+function eventControll (){
+
+    global $connection ;
+
+    $query = "SELECT id , date FROM events";
+    $result = mysqli_query($connection, $query);
+    if($result && mysqli_num_rows($result) > 0) {
+     
+        while($row = mysqli_fetch_array($result)){
+            $eventId = $row['id'];
+            $currentDate = date('Y-m-d');
+            if(!empty($row['date']) && $row['date'] <= $currentDate){
+                $deleteQuery = "DELETE FROM events WHERE id = '$eventId' LIMIT 1";
+                mysqli_query($connection,$deleteQuery);
+            }
+
+        }
+    }
+}
+
+function getSuspendedPlayers()
+{
+    global $connection;
+    $query = "SELECT * FROM players WHERE status = 1 ";
+    $result = mysqli_query($connection,$query);
+    return $result;
+}
+
+function getPlayerClasses($playerId){
+
+    global $connection;
+
+    $playerId = validate($playerId);
+
+    $query = "SELECT c.* FROM class c
+    JOIN plyerclasses pc ON c.id = pc.class_id 
+    WHERE pc.player_id = '$playerId'";
+   
+   $result = mysqli_query($connection,$query);
+
+   $classes = [];
+   if($result && mysqli_num_rows($result) > 0 ){
+    while($row = mysqli_fetch_array($result)){
+        $classes[] =$row;
+    }
+   }
+return $classes;
+}
+
+function calculateAndUpdateMonthlyIncome() {
+    global $connection;
+
+    $currentMonth = date('Y-m');
+
+  
+    $totalProfitQuery = "
+        SELECT SUM(total_profit) AS total_profit 
+        FROM orders  
+        WHERE DATE_FORMAT(created_at, '%Y-%m') = '$currentMonth'
+    ";
+    $totalProfitResult = mysqli_query($connection, $totalProfitQuery);
+    if (!$totalProfitResult) {
+        echo "Query Error: " . mysqli_error($connection);
+        return;
+    }
+    $totalProfitRow = mysqli_fetch_assoc($totalProfitResult);
+    $totalProfit = $totalProfitRow['total_profit'] ?? 0;
+
+    $totalFeesQuery = "
+        SELECT SUM(amount) AS total_fees 
+        FROM invoices 
+        WHERE DATE_FORMAT(created_at, '%Y-%m') = '$currentMonth'
+    ";
+    $totalFeesResult = mysqli_query($connection, $totalFeesQuery);
+    if (!$totalFeesResult) {
+        echo "Query Error: " . mysqli_error($connection);
+        return;
+    }
+    $totalFeesRow = mysqli_fetch_assoc($totalFeesResult);
+    $totalFees = $totalFeesRow['total_fees'] ?? 0;
+
+
+    $totalIncome = $totalFees + $totalProfit;
+
+   
+    $checkIncomeQuery = "
+        SELECT * 
+        FROM income 
+        WHERE month = '$currentMonth'
+    ";
+    $checkIncomeResult = mysqli_query($connection, $checkIncomeQuery);
+    if (!$checkIncomeResult) {
+        echo "Query Error: " . mysqli_error($connection);
+        return;
+    }
+
+    if (mysqli_num_rows($checkIncomeResult) > 0) {
+     
+        $updateIncomeQuery = "
+            UPDATE income 
+            SET total_profit = $totalProfit, total_fees = $totalFees, total_income = $totalIncome 
+            WHERE month = '$currentMonth'
+        ";
+        $updateIncomeResult = mysqli_query($connection, $updateIncomeQuery);
+        if (!$updateIncomeResult) {
+            echo "Update Error: " . mysqli_error($connection);
+        } else {
+            echo "Income updated successfully for month: $currentMonth";
+        }
+    } else {
+
+        $insertIncomeQuery = "
+            INSERT INTO income (month, total_profit, total_fees, total_income) 
+            VALUES ('$currentMonth', $totalProfit, $totalFees, $totalIncome)
+        ";
+        $insertIncomeResult = mysqli_query($connection, $insertIncomeQuery);
+        if (!$insertIncomeResult) {
+            echo "Insert Error: " . mysqli_error($connection);
+        } else {
+            echo "Income inserted successfully for month: $currentMonth";
+        }
+    }
+}
+
+function totalIncome(){
+    global $connection;
+
+    $currentYear = date('Y');
+    $totalIncomeQuery  = "SELECT  SUM(total_income) as incomes
+    FROM income WHERE YEAR(month) = '$currentYear'";
+
+    $totalIncomeREsult = mysqli_query($connection, $totalIncomeQuery);
+    if($totalIncomeREsult){
+    $totalFeesRow = mysqli_fetch_array($totalIncomeREsult);
+    $totalIncome = $totalFeesRow['incomes'];
+    return $totalIncome;
+    }else{
+        echo "Query Error: " . mysqli_error($connection);
+        return 0;
+    }
+}
+
+?>

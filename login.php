@@ -15,7 +15,7 @@ if (isset($_SESSION['loggedIn'])){
 
                 <?php alertMessage(); ?>
                     <div class="p-5">
-                        <h4 class="text-dark mb-6">minaitach - warehouse</h4>
+                        <h4 class="text-dark mb-6">kiwan - taekwondo</h4>
 
                         <form action="login-code.php" method="POST">
                             <div class="mb-3">

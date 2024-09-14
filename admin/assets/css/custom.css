@@ -61,4 +61,20 @@
 }
 
 
-
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 0;
+    margin-left: 5px;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: none;
+    border-color: transparent;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: #007bff;
+    color: white !important;
+    border-color: transparent;
+}
+.dataTables_wrapper .dataTables_length select {
+    width: auto;
+    display: inline-block;
+}
