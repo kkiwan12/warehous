@@ -187,6 +187,5 @@ $invoicesCount = countRecords('invoices');
         <?php } ?>
         </div>
     </div>
-</div>
 <?php endif; ?>
 <?php include "includes/footer.php"; ?>

@@ -72,7 +72,6 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#contact_us">تواصل معنا</a>
         </li>
- 
       <li>
             <div class="dropdown">
         <button class="btn btn-outline-darck dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
